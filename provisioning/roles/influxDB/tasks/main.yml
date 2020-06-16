@@ -1,0 +1,40 @@
+---
+# tasks file for influxDB
+
+- name: Add influxDB repo file to master node
+  copy:
+    src: files/influxdb.repo
+    dest: /etc/yum.repos.d/influxdb.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install influxdb on master node
+  yum:
+    name: influxdb
+    update_cache: true
+    state: present
+
+- name: Open port in firewall
+  firewalld:
+    port: 8086/tcp
+    permanent: yes
+    state: enabled
+
+- name: Make sure a influxDB service is running
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: influxdb
+    enabled: yes
+
+- name: Create database using custom credentials
+  influxdb_database:
+      hostname: "{{influxdb_ip_address}}"
+      username: "{{influxdb_username}}"
+      password: "{{influxdb_password}}"
+      database_name: "{{influxdb_database_name}}"
+      ssl: no
+      validate_certs: no
+
+

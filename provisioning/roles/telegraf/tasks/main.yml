@@ -1,0 +1,23 @@
+---
+# tasks file for telegraf
+
+- name: Add influxDB repo file to master node
+  copy:
+    src: files/influxdb.repo
+    dest: /etc/yum.repos.d/influxdb.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install telegraf on master node
+  yum:
+    name: telegraf
+    update_cache: true
+    state: present
+
+- name: Make sure a influxDB service is running
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: telegraf
+    enabled: yes

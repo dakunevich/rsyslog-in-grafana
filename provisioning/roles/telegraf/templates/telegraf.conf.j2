@@ -1,0 +1,8 @@
+[[inputs.syslog]]
+  server = "udp://:6514"
+  
+[[outputs.influxdb]]
+  urls = ["http://{{ influxdb_ip_address }}:8086"]
+  database = "{{ influxdb_database_name }}"
+  username = "{{ influxdb_username }}"
+  password = "{{ influxdb_password }}"

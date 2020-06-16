@@ -1,0 +1,28 @@
+---
+# tasks file for Grafana
+
+- name: Add Grafana repo file to master node
+  copy:
+    src: files/influxdb.repo
+    dest: /etc/yum.repos.d/grafana.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install influxdb on master node
+  yum:
+    name: grafana
+    update_cache: true
+    state: present
+
+- name: Open port in firewall
+  firewalld:
+    port: 3000/tcp
+    permanent: yes
+    state: enabled
+
+- name: Make sure a influxDB service is running
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: grafana

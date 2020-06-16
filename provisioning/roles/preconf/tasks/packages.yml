@@ -1,0 +1,17 @@
+---
+- name: Install packages {{ ansible_host }}
+  yum: name={{ item }}
+  with_items:
+    - wget
+    - bc
+    - rsync
+    - iotop
+    - htop
+    - unzip
+    - zip
+    - mtr
+    - tcpdump
+    - telnet
+    - openssh-clients
+    - sudo
+    - curl
